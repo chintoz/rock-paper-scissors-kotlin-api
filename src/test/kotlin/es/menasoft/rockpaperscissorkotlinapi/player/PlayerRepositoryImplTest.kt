@@ -16,20 +16,20 @@ internal class PlayerRepositoryImplTest {
 
     @Test
     fun `should save a player`() {
-        val player = playerRepository.save(Player(id="player@player.com"))
+        val player = playerRepository.save(Player(id = "player@player.com", name = "Gary", surname = "Player"))
         assertNotNull(player)
         assertEquals(1, playerRepository.findAll().size)
     }
 
     @Test
     fun `should list all players`() {
-        playerRepository.save(Player(id="player@player.com"))
+        playerRepository.save(Player(id = "player@player.com", name = "Gary", surname = "Player"))
         assertEquals(1, playerRepository.findAll().size)
     }
 
     @Test
     fun `should find a player by identifier`() {
-        playerRepository.save(Player(id="player@player.com"))
+        playerRepository.save(Player(id = "player@player.com", name = "Gary", surname = "Player"))
         assertNotNull(playerRepository.findById("player@player.com"))
     }
 }

@@ -5,25 +5,25 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 import javax.validation.constraints.Email
 
-class Player(@Email val id: String, val name: String? = null, val surname: String? = null)
+class Player(@Email val id: String, val name: String, val surname: String? = null)
 
 interface PlayerRepository {
     fun save(player: Player): Player
     fun findAll(): Collection<Player>
-    fun findById(id:String): Player?
+    fun findById(id: String): Player?
 }
 
 @Component
 @ConditionalOnMissingBean(value = [PlayerRepository::class], ignored = [PlayerRepositoryImpl::class])
 class PlayerRepositoryImpl : PlayerRepository {
 
-    var data : Map<String, Player> = ConcurrentHashMap()
+    var data: MutableMap<String, Player> = ConcurrentHashMap()
 
     override fun save(player: Player): Player {
-        data = data.plus(Pair(player.id, player))
+        data[player.id] = player
         return player
     }
 
-    override fun findAll(): Collection<Player> =  data.values
+    override fun findAll(): Collection<Player> = data.values
     override fun findById(id: String): Player? = data[id]
 }

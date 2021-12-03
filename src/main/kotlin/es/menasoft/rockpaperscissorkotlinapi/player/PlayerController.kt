@@ -1,6 +1,7 @@
 package es.menasoft.rockpaperscissorkotlinapi.player
 
 import lombok.extern.slf4j.Slf4j
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
@@ -17,5 +18,9 @@ class PlayerController(val playerRepository: PlayerRepository) {
 
     @GetMapping("/{id}")
     fun getPlayer(@PathVariable("id") id: String): Player? = playerRepository.findById(id)
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deletePlayer(@PathVariable("id") id: String) = playerRepository.delete(id)
 
 }

@@ -1,7 +1,6 @@
 package es.menasoft.rockpaperscissorkotlinapi.player
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -31,5 +30,12 @@ internal class PlayerRepositoryImplTest {
     fun `should find a player by identifier`() {
         playerRepository.save(Player(id = "player@player.com", name = "Gary", surname = "Player"))
         assertNotNull(playerRepository.findById("player@player.com"))
+    }
+
+    @Test
+    fun `should delete a player by identifier`() {
+        playerRepository.save(Player(id = "player@player.com", name = "Gary", surname = "Player"))
+        playerRepository.delete("player@player.com")
+        assertNull(playerRepository.findById("player@player.com"))
     }
 }

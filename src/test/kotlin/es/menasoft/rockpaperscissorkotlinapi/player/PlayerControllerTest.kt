@@ -11,8 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @ExtendWith(SpringExtension::class)
@@ -68,5 +67,16 @@ internal class PlayerControllerTest {
         ).andExpect(MockMvcResultMatchers.status().isOk)
 
         verify(playerRepository, times(1)).findById(eq("player@player.com"))
+    }
+
+    @Test
+    fun `should delete a player by id`() {
+
+        mockMvc.perform(
+            delete("/player/player@player.com")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent)
+
+        verify(playerRepository, times(1)).delete(eq("player@player.com"))
     }
 }

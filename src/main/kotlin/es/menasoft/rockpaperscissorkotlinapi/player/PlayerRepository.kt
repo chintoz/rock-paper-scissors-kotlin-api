@@ -11,6 +11,7 @@ interface PlayerRepository {
     fun save(player: Player): Player
     fun findAll(): Collection<Player>
     fun findById(id: String): Player?
+    fun delete(id:String)
 }
 
 @Component
@@ -26,4 +27,7 @@ class PlayerRepositoryImpl : PlayerRepository {
 
     override fun findAll(): Collection<Player> = data.values
     override fun findById(id: String): Player? = data[id]
+    override fun delete(id: String) {
+        data.remove(id)
+    }
 }

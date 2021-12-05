@@ -20,10 +20,7 @@ class PlayerRepositoryImpl : PlayerRepository {
 
     var data: MutableMap<String, Player> = ConcurrentHashMap()
 
-    override fun save(player: Player): Player {
-        data[player.id] = player
-        return player
-    }
+    override fun save(player: Player): Player = player.apply { data[player.id] = player }
 
     override fun findAll(): Collection<Player> = data.values
     override fun findById(id: String): Player? = data[id]

@@ -1,5 +1,6 @@
 package es.menasoft.rockpaperscissorkotlinapi.game
 
+import es.menasoft.rockpaperscissorkotlinapi.game.Level.EASY
 import es.menasoft.rockpaperscissorkotlinapi.game.Result.*
 import es.menasoft.rockpaperscissorkotlinapi.player.PlayerRepository
 import es.menasoft.rockpaperscissorkotlinapi.player.PlayerRepositoryImpl
@@ -22,17 +23,18 @@ class GameServiceImpl(val gameRepository: GameRepository, val playerRepository: 
 
     override fun play(round: PlayerRound): PlayerResultedRound {
         playerRepository.findById(round.id) ?: throw IllegalArgumentException("Player Not Found")
-        // TODO: Choose strategy
-        val opponentHand = RandomStrategy.playHand();
-        return gameRepository.save(
-            PlayerResultedRound(
-                round.id,
-                round.hand,
-                opponentHand.let { round.hand.evaluate(it) },
-                opponentHand,
-                LocalDateTime.now()
+
+        return round.level.gameStrategy.playHand().let {
+            gameRepository.save(
+                PlayerResultedRound(
+                    round.id,
+                    round.hand,
+                    it.let { round.hand.evaluate(it) },
+                    it,
+                    LocalDateTime.now()
+                )
             )
-        )
+        }
     }
 
     override fun list(id: String): Collection<PlayerResultedRound> = (playerRepository.findById(id)
@@ -68,7 +70,7 @@ enum class Result {
     WIN, LOSE, TIED;
 }
 
-open class PlayerRound(val id: String, val hand: BasicHand)
+open class PlayerRound(val id: String, val hand: BasicHand, val level: Level = EASY)
 
 class PlayerResultedRound(
     id: String,

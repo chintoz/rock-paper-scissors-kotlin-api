@@ -40,3 +40,10 @@ jobs:
 
       # run tests!
       - run: mvn verify
+
+      - store_artifacts:
+          path: target/jacoco.exec
+
+      - run:
+          name: Send to CodeCov
+          command: bash <(curl -s https://codecov.io/bash)
